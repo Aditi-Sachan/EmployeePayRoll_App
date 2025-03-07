@@ -12,8 +12,9 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
+    //refactor
     @Autowired
-    private EmployeeRepository employeeRepository;
+    EmployeeRepository employeeRepository;
 
     // 1️⃣ GET - Fetch all employees
     @GetMapping
