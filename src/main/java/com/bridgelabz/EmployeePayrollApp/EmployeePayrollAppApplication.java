@@ -15,6 +15,9 @@ public class EmployeePayrollAppApplication {
 		// Log the active environment
 		log.info("Employee Payroll App started in {} Environment",
 				context.getEnvironment().getProperty("spring.profiles.active", "default"));
+
+		log.info("Employee Payroll DB User is {}",
+				context.getEnvironment().getProperty("spring.datasource.username"));
 	}
 }
 
