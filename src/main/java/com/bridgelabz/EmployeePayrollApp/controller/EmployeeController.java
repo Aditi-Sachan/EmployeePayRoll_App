@@ -1,5 +1,6 @@
 package com.bridgelabz.EmployeePayrollApp.controller;
 
+import com.bridgelabz.EmployeePayrollApp.dto.EmployeeDTO;
 import com.bridgelabz.EmployeePayrollApp.model.Employee;
 import com.bridgelabz.EmployeePayrollApp.repository.EmployeeRepository;
 import jakarta.validation.Valid;
@@ -12,7 +13,6 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    //refactor
     @Autowired
     EmployeeRepository employeeRepository;
 
@@ -29,21 +29,25 @@ public class EmployeeController {
                 .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
     }
 
-    // 3️⃣ POST - Add a new employee
+    // 3️⃣ POST - Add a new employee with DTO Validation
     @PostMapping
-    public Employee addEmployee(@Valid @RequestBody Employee employee) {
+    public Employee addEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        employee.setName(employeeDTO.getName());
+        employee.setSalary(employeeDTO.getSalary());
+        employee.setDepartment(employeeDTO.getDepartment());
         return employeeRepository.save(employee);
     }
 
     // 4️⃣ PUT - Update an existing employee
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Long id, @Valid @RequestBody Employee updatedEmployee) {
+    public Employee updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO updatedEmployeeDTO) {
         Employee existingEmployee = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
 
-        existingEmployee.setName(updatedEmployee.getName());
-        existingEmployee.setSalary(updatedEmployee.getSalary());
-        existingEmployee.setDepartment(updatedEmployee.getDepartment());
+        existingEmployee.setName(updatedEmployeeDTO.getName());
+        existingEmployee.setSalary(updatedEmployeeDTO.getSalary());
+        existingEmployee.setDepartment(updatedEmployeeDTO.getDepartment());
 
         return employeeRepository.save(existingEmployee);
     }
@@ -58,4 +62,5 @@ public class EmployeeController {
         return "Employee with ID " + id + " deleted successfully.";
     }
 }
+
 
